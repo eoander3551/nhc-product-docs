@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NHC eFax — Competitive Positioning</title>
+<!--
+  PASSWORD PROTECTION
+  ===================
+  To change the password, replace the hash value in the JS below.
+  Generate a new hash: python3 -c "import hashlib; print(hashlib.sha256('YourPassword'.encode()).hexdigest())"
+  Do NOT commit the plaintext password to this repo.
+-->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:        #0D1F35;
+    --blue:        #1A5FA8;
+    --sky:         #E8F2FC;
+    --green:       #1A7A4A;
+    --green-light: #E6F5ED;
+    --amber:       #A85A00;
+    --amber-light: #FDF3E3;
+    --slate:       #4A5568;
+    --rule:        #D1DCE8;
+    --white:       #FFFFFF;
+    --off:         #F7F9FC;
+    --red:         #C0392B;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--navy); font-size: 13px; line-height: 1.5; padding: 40px 48px; max-width: 960px; margin: 0 auto; }
+
+  header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--navy); padding-bottom: 14px; margin-bottom: 28px; }
+  .brand { font-size: 11px; font-weight: 500; letter-spacing: .08em; color: var(--slate); text-transform: uppercase; }
+  h1 { font-size: 22px; font-weight: 600; color: var(--navy); line-height: 1.2; margin-top: 4px; }
+  .date { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--slate); }
+
+  .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: .1em; color: var(--blue); text-transform: uppercase; margin-bottom: 10px; margin-top: 28px; }
+
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 4px; }
+  .tier { border: 1.5px solid var(--rule); border-radius: 6px; padding: 16px; background: var(--off); position: relative; }
+  .tier.featured { border-color: var(--blue); background: var(--sky); }
+  .tier-badge { position: absolute; top: -1px; right: 12px; background: var(--blue); color: white; font-size: 9px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 0 0 4px 4px; }
+  .tier-name { font-weight: 600; font-size: 13px; color: var(--navy); margin-bottom: 2px; }
+  .tier-desc { font-size: 11px; color: var(--slate); margin-bottom: 12px; }
+  .tier-price { font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 500; color: var(--navy); }
+  .tier-price span { font-size: 12px; font-weight: 400; color: var(--slate); }
+  .tier-features { margin-top: 12px; list-style: none; }
+  .tier-features li { font-size: 11.5px; color: var(--slate); padding: 3px 0; border-top: 1px solid var(--rule); }
+  .tier-features li:first-child { border-top: none; }
+  .tier-features li strong { color: var(--navy); }
+
+  .addons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px; }
+  .addon { border: 1px solid var(--rule); border-radius: 6px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; background: var(--white); }
+  .addon-name { font-weight: 500; font-size: 12px; }
+  .addon-sub { font-size: 11px; color: var(--slate); }
+  .addon-price { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; color: var(--navy); text-align: right; white-space: nowrap; }
+  .addon-price span { font-size: 10px; color: var(--slate); display: block; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead tr { background: var(--navy); color: white; }
+  thead th { padding: 9px 12px; text-align: left; font-weight: 500; font-size: 11px; letter-spacing: .03em; }
+  tbody tr { border-bottom: 1px solid var(--rule); }
+  tbody tr:nth-child(even) { background: var(--off); }
+  tbody tr.nhc-row { background: var(--sky); font-weight: 500; }
+  tbody tr.nhc-row td:first-child { border-left: 3px solid var(--blue); }
+  td { padding: 8px 12px; color: var(--slate); }
+  td:first-child { color: var(--navy); font-weight: 500; }
+  .better { color: var(--green); font-weight: 600; }
+  .worse  { color: var(--amber); }
+
+  .callout { border-left: 3px solid; border-radius: 0 6px 6px 0; padding: 10px 14px; font-size: 11.5px; margin-top: 16px; }
+
+  /* ICB — public */
+  .icb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
+  .icb-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .icb-table thead tr { background: var(--navy); color: white; }
+  .icb-table thead th { padding: 7px 10px; text-align: left; font-weight: 500; font-size: 10.5px; letter-spacing: .03em; }
+  .icb-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .icb-table tbody tr:nth-child(even) { background: var(--off); }
+  .icb-table td { padding: 6px 10px; color: var(--slate); }
+  .icb-table td:first-child { color: var(--navy); font-weight: 500; }
+  .icb-floor { color: var(--amber); font-weight: 600; }
+  .icb-note { margin-top: 10px; background: var(--amber-light); border-left: 3px solid var(--amber); border-radius: 0 6px 6px 0; padding: 8px 12px; font-size: 11px; color: #7A3E00; }
+  .icb-note strong { color: #5A2900; }
+
+  /* Margin cards — protected */
+  .margin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .margin-card { border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+  .margin-card-header { background: var(--navy); color: white; padding: 8px 14px; font-weight: 500; font-size: 12px; }
+  .margin-card-body { padding: 12px 14px; }
+  .margin-row { display: flex; justify-content: space-between; font-size: 11.5px; padding: 3px 0; border-bottom: 1px solid var(--rule); color: var(--slate); }
+  .margin-row:last-child { border-bottom: none; }
+  .margin-row.total { font-weight: 600; color: var(--navy); margin-top: 4px; padding-top: 6px; border-top: 1.5px solid var(--navy); border-bottom: none; }
+  .margin-val { font-family: 'IBM Plex Mono', monospace; }
+  .margin-highlight { margin-top: 8px; background: var(--green-light); border-radius: 4px; padding: 6px 10px; font-size: 11px; color: var(--green); font-weight: 500; }
+
+  .notes { margin-top: 24px; border-top: 1px solid var(--rule); padding-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px; }
+  .note { font-size: 11.5px; color: var(--slate); }
+  .note strong { color: var(--navy); }
+
+  /* Lock gate */
+  #lock-gate { margin-top: 32px; border: 1.5px solid var(--rule); border-radius: 8px; padding: 28px 32px; text-align: center; background: var(--off); }
+  #lock-gate h2 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  #lock-gate p { font-size: 12px; color: var(--slate); margin-bottom: 18px; }
+  #lock-gate input { font-family: 'IBM Plex Mono', monospace; font-size: 13px; border: 1.5px solid var(--rule); border-radius: 5px; padding: 8px 14px; width: 240px; outline: none; color: var(--navy); }
+  #lock-gate input:focus { border-color: var(--blue); }
+  #lock-gate button { margin-left: 10px; background: var(--navy); color: white; border: none; border-radius: 5px; padding: 8px 20px; font-size: 12px; font-weight: 500; cursor: pointer; }
+  #lock-gate button:hover { background: var(--blue); }
+  #lock-error { color: var(--red); font-size: 11.5px; margin-top: 10px; display: none; }
+  #lock-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--amber-light); border: 1px solid var(--amber); border-radius: 4px; padding: 4px 10px; font-size: 11px; color: var(--amber); font-weight: 500; margin-bottom: 20px; }
+  #protected-content { display: none; }
+  #unlocked-banner { display: none; margin-top: 28px; background: var(--green-light); border-left: 3px solid var(--green); border-radius: 0 6px 6px 0; padding: 8px 14px; font-size: 11.5px; color: var(--green); font-weight: 500; }
+
+  footer { margin-top: 32px; border-top: 1px solid var(--rule); padding-top: 12px; font-size: 10px; color: var(--slate); font-family: 'IBM Plex Mono', monospace; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="brand">New Horizon Communications</div>
+    <h1>eFax — Competitive Positioning</h1>
+  </div>
+  <div class="date">Draft · Sep 30, 2026</div>
+</header>
+
+<!-- ═══════════════ PUBLIC ═══════════════ -->
+
+<div class="section-label">NHC eFax offerings</div>
+<div class="tiers">
+  <div class="tier">
+    <div class="tier-name">Standard</div>
+    <div class="tier-desc">General business faxing</div>
+    <div class="tier-price">$16.95<span>/mo</span></div>
+    <ul class="tier-features">
+      <li><strong>150 pages</strong> included/mo</li>
+      <li>Fax-to-email, email-to-fax</li>
+      <li>Online fax portal</li>
+      <li>$0.10/page overage</li>
+    </ul>
+  </div>
+  <div class="tier featured">
+    <div class="tier-badge">Recommended</div>
+    <div class="tier-name">Secure</div>
+    <div class="tier-desc">Sensitive &amp; confidential docs</div>
+    <div class="tier-price">$24.95<span>/mo</span></div>
+    <ul class="tier-features">
+      <li><strong>200 pages</strong> included/mo</li>
+      <li>AES 256-bit secure portal</li>
+      <li>Encrypted storage at rest</li>
+      <li>$0.10/page overage</li>
+    </ul>
+  </div>
+  <div class="tier">
+    <div class="tier-name">Secure + TLS</div>
+    <div class="tier-desc">Regulated industries</div>
+    <div class="tier-price">$34.95<span>/mo</span></div>
+    <ul class="tier-features">
+      <li><strong>250 pages</strong> included/mo</li>
+      <li>All Secure features</li>
+      <li>TLS-encrypted transport</li>
+      <li>$0.10/page overage</li>
+      <li>$99.00 one-time setup</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section-label" style="margin-top:16px;">Page add-ons (stackable)</div>
+<div class="addons">
+  <div class="addon">
+    <div><div class="addon-name">500-page pack</div><div class="addon-sub">+500 pages/mo · any tier</div></div>
+    <div class="addon-price">$39.95<span>/mo</span></div>
+  </div>
+  <div class="addon">
+    <div><div class="addon-name">1,000-page pack</div><div class="addon-sub">+1,000 pages/mo · any tier</div></div>
+    <div class="addon-price">$69.95<span>/mo</span></div>
+  </div>
+  <div class="addon">
+    <div><div class="addon-name">Overage rate</div><div class="addon-sub">After all included pages</div></div>
+    <div class="addon-price">$0.10<span>/page</span></div>
+  </div>
+</div>
+
+<div class="section-label" style="margin-top:16px;">Optional add-ons</div>
+<div class="addons">
+  <div class="addon" style="border-style:dashed;border-color:var(--blue);background:var(--sky);">
+    <div>
+      <div class="addon-name" style="color:var(--blue);">eFax API access <span style="font-size:10px;font-weight:400;color:var(--slate);">— PLACEHOLDER</span></div>
+      <div class="addon-sub">RESTful API · CRM/EMR/ERP integration · any tier</div>
+      <div class="addon-sub" style="margin-top:3px;color:var(--blue);">Decision pending — available at all 3 tiers · ICB eligible</div>
+    </div>
+    <div class="addon-price" style="color:var(--blue);">$39.95<span>/mo</span></div>
+  </div>
+</div>
+
+<div class="section-label">Market comparison</div>
+<table>
+  <thead>
+    <tr><th>Provider</th><th>Plan</th><th>Price/mo</th><th>Included pages</th><th>Overage</th><th>Security features</th></tr>
+  </thead>
+  <tbody>
+    <tr class="nhc-row"><td>NHC eFax Standard</td><td>Standard</td><td>$16.95</td><td class="better">150 pg</td><td>$0.10/pg</td><td>Basic portal</td></tr>
+    <tr class="nhc-row"><td>NHC eFax Secure</td><td>Secure</td><td>$24.95</td><td class="better">200 pg</td><td>$0.10/pg</td><td class="better">AES 256-bit portal + at-rest</td></tr>
+    <tr class="nhc-row"><td>NHC eFax Secure+TLS</td><td>Secure+TLS</td><td>$34.95 + $99 NRC</td><td class="better">250 pg</td><td>$0.10/pg</td><td class="better">AES 256 + TLS transport</td></tr>
+    <tr><td>eFax (retail)</td><td>Plus</td><td class="worse">$18.99</td><td class="worse">150 pg</td><td>$0.10/pg</td><td>Basic</td></tr>
+    <tr><td>eFax (retail)</td><td>Pro</td><td class="worse">$19.99</td><td class="worse">200 pg</td><td>$0.10/pg</td><td>Basic</td></tr>
+    <tr><td>RingCentral Fax</td><td>Fax 500</td><td>$17.99</td><td class="better">500 pg</td><td>$0.05/pg</td><td>Basic</td></tr>
+    <tr><td>RingCentral Fax</td><td>Fax 1000</td><td>$22.99</td><td class="better">1,000 pg</td><td>$0.05/pg</td><td>Basic</td></tr>
+    <tr><td>HelloFax</td><td>Professional</td><td>$19.99</td><td class="better">750 pg</td><td>—</td><td>Basic</td></tr>
+    <tr><td>Fax.Plus</td><td>Premium</td><td class="better">$17.99</td><td class="better">500 pg</td><td>varies</td><td>HIPAA-ready</td></tr>
+    <tr><td>MyFax</td><td>Standard</td><td class="better">$10.00</td><td class="worse">200 pg</td><td>$0.10/pg</td><td>Basic</td></tr>
+  </tbody>
+</table>
+
+<div class="callout" style="background:var(--green-light);border-left-color:var(--green);color:var(--green);">
+  <strong style="color:#0D4A2A;">Resale structure:</strong> NHC sells eFax on a Nonbundle Basis to existing NHC customers who carry another NHC service. Pricing below eFax retail is permitted. The key restriction is that NHC cannot sell to existing direct Consensus/eFax customers.
+</div>
+
+<!-- ICB — PUBLIC -->
+<div class="section-label">ICB pricing guidance</div>
+<div class="icb-grid">
+  <div>
+    <table class="icb-table">
+      <thead><tr><th>Product</th><th>Published retail</th><th>ICB floor</th></tr></thead>
+      <tbody>
+        <tr><td>Standard</td><td>$16.95/mo</td><td class="icb-floor">$12.95/mo</td></tr>
+        <tr><td>Secure</td><td>$24.95/mo</td><td class="icb-floor">$18.95/mo</td></tr>
+        <tr><td>Secure+TLS</td><td>$34.95/mo</td><td class="icb-floor">$24.95/mo</td></tr>
+        <tr><td>500-page pack</td><td>$39.95/mo</td><td class="icb-floor">$29.95/mo</td></tr>
+        <tr><td>1,000-page pack</td><td>$69.95/mo</td><td class="icb-floor">$54.95/mo</td></tr>
+        <tr><td>Overage</td><td>$0.10/pg</td><td class="icb-floor">$0.07/pg</td></tr>
+        <tr><td>Setup (TLS)</td><td>$99.00 NRC</td><td class="icb-floor">$99.00 NRC — do not waive</td></tr>
+        <tr style="background:var(--sky);"><td style="color:var(--blue);">API access <em style="font-weight:400;font-size:10px;">(placeholder)</em></td><td style="color:var(--blue);">$39.95/mo</td><td class="icb-floor">TBD</td></tr>
+      </tbody>
+    </table>
+    <div class="icb-note"><strong>ICB floor = absolute minimum.</strong> Sales manager sign-off required below retail. Deal desk approval required at or below floor. Page count adjustments also require ICB. No self-serve discounting.</div>
+  </div>
+  <div>
+    <table class="icb-table">
+      <thead><tr><th>Scenario</th><th>Guidance</th></tr></thead>
+      <tbody>
+        <tr><td>Multi-line deal (5+ numbers)</td><td>ICB eligible — discount on MRC, not page packs</td></tr>
+        <tr><td>Bundle with other NHC services</td><td>eFax can be discounted deeper as part of a broader deal — coordinate with deal desk</td></tr>
+        <tr><td>High page volume (1,000+ pg/mo)</td><td>Custom quote — do not publish; floor is $0.07/pg effective</td></tr>
+        <tr><td>Upgrade Standard → Secure</td><td>Waive first month delta as upgrade incentive; no floor waiver on ongoing MRC</td></tr>
+        <tr><td>Legacy $9.99 customer</td><td>Migration required; 90-day notice minimum; do not grandfather indefinitely</td></tr>
+        <tr><td>TLS setup fee waiver</td><td>Do not waive — creates cost exposure on setup</td></tr>
+        <tr><td>Competitor match</td><td>Match only if customer has another NHC service; document competitive justification</td></tr>
+      </tbody>
+    </table>
+    <div class="icb-note"><strong>Who approves:</strong> Sales manager for any price below retail. Deal desk for any price at or below ICB floor.</div>
+  </div>
+</div>
+
+<!-- ═══════════════ LOCK GATE ═══════════════ -->
+<div id="lock-gate">
+  <div id="lock-badge">🔒 NHC finance &amp; leadership only</div>
+  <h2>Cost &amp; Margin Analysis</h2>
+  <p>Wholesale cost data and margin details are restricted.<br>Enter your NHC internal password to continue.</p>
+  <div>
+    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter') checkPassword()" />
+    <button onclick="checkPassword()">Unlock</button>
+  </div>
+  <div id="lock-error">Incorrect password. Try again.</div>
+</div>
+
+<div id="unlocked-banner">✅ Cost &amp; margin view unlocked — NHC finance / leadership</div>
+
+<!-- ═══════════════ PROTECTED ═══════════════ -->
+<div id="protected-content">
+
+  <div class="section-label">Margin at full page utilization (worst case)</div>
+  <div class="margin-grid">
+    <div class="margin-card">
+      <div class="margin-card-header">Standard · $16.95</div>
+      <div class="margin-card-body">
+        <div class="margin-row"><span>150 pages @ $0.049</span><span class="margin-val">$7.35</span></div>
+        <div class="margin-row"><span>BSN fee</span><span class="margin-val">$1.50</span></div>
+        <div class="margin-row"><span>Secure add-on</span><span class="margin-val">—</span></div>
+        <div class="margin-row total"><span>Gross margin</span><span class="margin-val">$8.10</span></div>
+        <div class="margin-highlight">48% at full utilization</div>
+      </div>
+    </div>
+    <div class="margin-card">
+      <div class="margin-card-header">Secure · $24.95</div>
+      <div class="margin-card-body">
+        <div class="margin-row"><span>200 pages @ $0.049</span><span class="margin-val">$9.80</span></div>
+        <div class="margin-row"><span>BSN fee</span><span class="margin-val">$1.50</span></div>
+        <div class="margin-row"><span>eFax Secure add-on</span><span class="margin-val">$2.00</span></div>
+        <div class="margin-row total"><span>Gross margin</span><span class="margin-val">$11.65</span></div>
+        <div class="margin-highlight">47% at full utilization</div>
+      </div>
+    </div>
+    <div class="margin-card">
+      <div class="margin-card-header">Secure+TLS · $34.95</div>
+      <div class="margin-card-body">
+        <div class="margin-row"><span>250 pages @ $0.049</span><span class="margin-val">$12.25</span></div>
+        <div class="margin-row"><span>BSN fee</span><span class="margin-val">$1.50</span></div>
+        <div class="margin-row"><span>eFax Secure add-on</span><span class="margin-val">$2.00</span></div>
+        <div class="margin-row"><span>TLS acct fee (÷ 25 customers)</span><span class="margin-val">$4.00</span></div>
+        <div class="margin-row total"><span>Gross margin</span><span class="margin-val">$15.20</span></div>
+        <div class="margin-highlight">43% at 25 customers · 57% at 50+</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note"><strong>Usage reality:</strong> April 2026 data (1,283 numbers) showed median usage of 2 pages/month. 97.4% of numbers used fewer than 200 pages. Real margins are substantially higher than the full-utilization figures above.</div>
+    <div class="note"><strong>BSN tier opportunity:</strong> At 1,283 numbers NHC likely qualifies for the $1.00/BSN tier (1,000–9,999 range). If currently billed at $1.50, correcting this saves ~$641/month (~$7,700/year). Verify against current Consensus invoice.</div>
+    <div class="note"><strong>TLS cost structure:</strong> $100/month flat for the dedicated TLS Consensus account — confirmed account-level, not per number. $100 one-time setup recovered via $99 NRC on each customer.</div>
+    <div class="note"><strong>EAPI fee:</strong> $300/month flat covers all three Consensus accounts (Corp IDs 103442, 92368, 58113). Not a per-customer charge. Amendment Two signed 9/15/2026.</div>
+    <div class="note"><strong>SKUs to retire:</strong> 409 (200-page $0.00) and 410 (300-page $0.00) to be removed. Included pages folded into tier description only.</div>
+    <div class="note"><strong>New SKUs needed:</strong> EFAXTLS, SKU 411 (500-page add-on), SKU 412 (1,000-page add-on) require new item codes in Metaswitch and CustomCall before launch.</div>
+  </div>
+
+</div><!-- end protected-content -->
+
+<footer>
+  <span>NHC INTERNAL — DRAFT — NOT FOR DISTRIBUTION</span>
+  <span>Consensus contract: Amend. 1 eff. 8/1/2026 · Amend. 2 eff. 9/1/2026 · Term through 7/31/2028</span>
+</footer>
+
+<script>
+  // SHA-256 hash of internal password. Do not store plaintext in this file.
+  // To update: python3 -c "import hashlib; print(hashlib.sha256('NewPassword'.encode()).hexdigest())"
+  const CORRECT_HASH = '661949c38e191fd4b8d2339f16865665d3e6bf01deb2f1e69d6a918a920d57ba';
+
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function checkPassword() {
+    const input = document.getElementById('pw-input').value;
+    const hash = await sha256(input);
+    if (hash === CORRECT_HASH) {
+      document.getElementById('lock-gate').style.display = 'none';
+      document.getElementById('protected-content').style.display = 'block';
+      document.getElementById('unlocked-banner').style.display = 'block';
+    } else {
+      document.getElementById('lock-error').style.display = 'block';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+</script>
+
+</body>
+</html>
